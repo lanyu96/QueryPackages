@@ -68,10 +68,12 @@
 
     </LinearLayout>
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/act_query_dateInfo_rv"
         android:layout_width="match_parent"
         android:scrollbars="vertical"
+        android:layout_marginTop="13dp"
         android:layout_height="wrap_content">
 
 

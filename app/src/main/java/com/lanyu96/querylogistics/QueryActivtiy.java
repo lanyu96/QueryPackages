@@ -18,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import com.lanyu96.querylogistics.adapter.DataInfoAdapter;
 import com.lanyu96.querylogistics.bean.LocAndTimeInfo;
 import com.lanyu96.querylogistics.bean.PackagesInfo;
+import com.lanyu96.querylogistics.uitl.SimpleDividerItemDecoration;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +46,7 @@ public class QueryActivtiy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query_activtiy);
         initView();
-        sb = new StringBuilder();
+//        sb = new StringBuilder();
 
     }
 
@@ -64,6 +65,10 @@ public class QueryActivtiy extends AppCompatActivity {
                 , LinearLayoutManager.VERTICAL, false));
         //瀑布流管理器
 //        dataInfo_rv.setLayoutManager(new StaggeredGridLayoutManager(1, VERTICAL));
+
+        //为recyclerView添加分割线
+        dataInfo_rv.addItemDecoration(new SimpleDividerItemDecoration(this,5));
+
         //临时指定 edittext
         logisticsCompany_et.setText("yuantong");
         logisticsDanhao_et.setText("802990317202125904");

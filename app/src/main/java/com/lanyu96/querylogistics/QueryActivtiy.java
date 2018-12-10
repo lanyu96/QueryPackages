@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -24,6 +25,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.support.v7.widget.StaggeredGridLayoutManager.VERTICAL;
 
 
 public class QueryActivtiy extends AppCompatActivity {
@@ -56,9 +59,11 @@ public class QueryActivtiy extends AppCompatActivity {
 
         //初始化RecyclerView
         dataInfo_rv = findViewById(R.id.act_query_dateInfo_rv);
+        //设置为线性布局管理器
         dataInfo_rv.setLayoutManager(new LinearLayoutManager(QueryActivtiy.this
                 , LinearLayoutManager.VERTICAL, false));
-
+        //瀑布流管理器
+//        dataInfo_rv.setLayoutManager(new StaggeredGridLayoutManager(1, VERTICAL));
         //临时指定 edittext
         logisticsCompany_et.setText("yuantong");
         logisticsDanhao_et.setText("802990317202125904");
@@ -107,6 +112,8 @@ public class QueryActivtiy extends AppCompatActivity {
 //            logisticsInfo_tv.setText("正在加载");
             query_company_tv.setText("正在加载");
             query_danhao_tv.setText("");
+            List<DataInfoAdapter> list = new ArrayList<>();
+            dataInfo_rv.setAdapter(new DataInfoAdapter(QueryActivtiy.this,list));
             Log.i(TAG, "正在获取jsonData");
         }
 

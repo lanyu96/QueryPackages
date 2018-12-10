@@ -67,7 +67,7 @@ public class QueryActivtiy extends AppCompatActivity {
 //        dataInfo_rv.setLayoutManager(new StaggeredGridLayoutManager(1, VERTICAL));
 
         //为recyclerView添加分割线
-        dataInfo_rv.addItemDecoration(new SimpleDividerItemDecoration(this,5));
+        dataInfo_rv.addItemDecoration(new SimpleDividerItemDecoration(this,30,3));
 
         //临时指定 edittext
         logisticsCompany_et.setText("yuantong");

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
+import com.lanyu96.querylogistics.adapter.DataInfoAdapter;
 import com.lanyu96.querylogistics.bean.LocAndTimeInfo;
 import com.lanyu96.querylogistics.bean.PackagesInfo;
 
@@ -52,6 +53,7 @@ public class QueryActivtiy extends AppCompatActivity {
         query_danhao_tv = findViewById(R.id.act_query_danhao_tv);
 
         logisticsDanhao_et = findViewById(R.id.act_query_yundanhao_et);
+
         //初始化RecyclerView
         dataInfo_rv = findViewById(R.id.act_query_dateInfo_rv);
         dataInfo_rv.setLayoutManager(new LinearLayoutManager(QueryActivtiy.this
@@ -159,6 +161,7 @@ public class QueryActivtiy extends AppCompatActivity {
                         list.add(new LocAndTimeInfo(time, context));
                     }
                 }
+                dataInfo_rv.setAdapter(new DataInfoAdapter(QueryActivtiy.this,list));
 
 
             } catch (JSONException e) {

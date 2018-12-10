@@ -35,9 +35,8 @@ public class DataInfoAdapter extends RecyclerView.Adapter<DataInfoAdapter.DataIn
     @Override
     public void onBindViewHolder(@NonNull DataInfoViewHolder dataInfoViewHolder, int i) {
         LocAndTimeInfo lti = (LocAndTimeInfo) mList.get(i);
-        
-
-
+        dataInfoViewHolder.time_tv.setText(lti.getTime());
+        dataInfoViewHolder.location_info_tv.setText(lti.getLoc());
     }
 
 

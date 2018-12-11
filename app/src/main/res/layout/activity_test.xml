@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TestActivity">
+
+
+
+    <github.ishaan.buttonprogressbar.ButtonProgressBar
+        android:id="@+id/test_btn_progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:text="点击获取"
+        app:textColor="#fff"
+        app:type="indeterminate"
+
+        />
+
+
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.lanyu96.querylogistics;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,13 +12,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lanyu96.querylogistics.adapter.DataInfoAdapter;
 import com.lanyu96.querylogistics.bean.LocAndTimeInfo;
 import com.lanyu96.querylogistics.bean.PackagesCompany;
 import com.lanyu96.querylogistics.uitl.GetJsonData;
 import com.lanyu96.querylogistics.uitl.SimpleDividerItemDecoration;
+import com.lanyu96.querylogistics.uitl.TransformationUtil;
 
 import org.angmarch.views.NiceSpinner;
 import org.json.JSONArray;
@@ -42,13 +43,27 @@ public class QueryActivtiy extends AppCompatActivity {
     private RecyclerView dataInfo_rv;
     private NiceSpinner query_company_nicespinner;
     private String logisticsCompany;
+    private String company;
+    private SharedPreferences sp;
+    private String spCompany;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query_activtiy);
+        initSp();
         initView();
 //        sb = new StringBuilder();
+
+
+    }
+
+    /**
+     * 初始化SharedPreferences存储
+     */
+    private void initSp() {
+        sp = getSharedPreferences("danhao", MODE_PRIVATE);
+
 
     }
 
@@ -90,50 +105,26 @@ public class QueryActivtiy extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 //                Toast.makeText(QueryActivtiy.this, ""+view+PackagesCompany.str[position], Toast.LENGTH_SHORT).show();
-                switch (PackagesCompany.str[position]) {
-                    case "申通快递":
-                        logisticsCompany = "shentong";
-                        break;
-                    case "EMS":
-                        logisticsCompany = "ems";
-                        break;
-                    case "顺丰速运":
-                        logisticsCompany = "shunfeng";
-                        break;
-                    case "圆通快递":
-                        logisticsCompany = "yuantong";
-                        break;
-                    case "中通快递":
-                        logisticsCompany = "zhongtong";
-                        break;
-                    case "韵达快递":
-                        logisticsCompany = "yunda";
-                        break;
-                    case "汇通快递":
-                        logisticsCompany = "huitongkuaidi";
-                        break;
-                    case "天天快递":
-                        logisticsCompany = "tiantian";
-                        break;
-                    case "全峰物流":
-                        logisticsCompany = "quanfengkuaidi";
-                        break;
-                    case "德邦物流":
-                        logisticsCompany = "debangwuliu";
-                        break;
-                    case "宅急送":
-                        logisticsCompany = "zhaijisong";
-                        break;
-                    default:
-                        Toast.makeText(QueryActivtiy.this, "请选择快递公司", Toast.LENGTH_SHORT).show();
-                }
+                logisticsCompany = TransformationUtil.Transformation(QueryActivtiy.this, PackagesCompany.str[position]);
+                company = PackagesCompany.str[position];
             }
         });
 
 
         //临时指定 edittext
 //        logisticsCompany_et.setText("yuantong");
-        logisticsDanhao_et.setText("802990317202125904");
+//        logisticsDanhao_et.setText("802990317202125904");
+        spCompany = sp.getString("COMPANY", "");
+        String spNumber = sp.getString("NUMBER", "");
+        if (!spNumber.equals("") && !spCompany.equals("")) {
+            logisticsDanhao_et.setText(spNumber);
+            query_company_nicespinner.setTextInternal(spCompany);
+            //通过TransformationUtil工具类解析快递公司
+            logisticsCompany = TransformationUtil.Transformation(this, spCompany);
+
+        }
+
+
     }
 
     public void queryInfo(View view) {
@@ -175,6 +166,7 @@ public class QueryActivtiy extends AppCompatActivity {
 //
 //    }
 
+    //内部类: 实现异步网络请求
     @SuppressLint("StaticFieldLeak")
     class RequestNetworkDataTask extends AsyncTask<String, Integer, String> {
 
@@ -211,16 +203,21 @@ public class QueryActivtiy extends AppCompatActivity {
 
                 //解析JSON
                 //第一层解析
-                String company = jsonObject.optString("com");
+//                String company = jsonObject.optString("com");
                 String condition = jsonObject.optString("codition");
                 String ischeck = jsonObject.optString("ischeck");
                 String number = jsonObject.optString("nu");
                 Log.i(TAG, "快递单号为 : " + number);
                 Log.i(TAG, "快递公司为" + company);
                 //通过textView 显示单号和物流公司
-                query_danhao_tv.setText(number);
-                query_company_tv.setText(company);
 
+                query_danhao_tv.setText(number);
+                //判断如果company没有数据,则使用spCompany
+                if (company == null || company.equals("")) {
+                    query_company_tv.setText(spCompany);
+                } else {
+                    query_company_tv.setText(company);
+                }
                 String state = jsonObject.optString("state");
                 String status = jsonObject.optString("status");
 
@@ -241,6 +238,10 @@ public class QueryActivtiy extends AppCompatActivity {
                     }
                 }
                 dataInfo_rv.setAdapter(new DataInfoAdapter(QueryActivtiy.this, list));
+
+                //将快递公司信息和快递单号添加到SP中
+                sp.edit().putString("COMPANY", company)
+                        .putString("NUMBER", number).apply();
 
 
             } catch (JSONException e) {

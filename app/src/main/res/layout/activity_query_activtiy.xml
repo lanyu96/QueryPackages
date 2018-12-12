@@ -78,7 +78,6 @@
         android:layout_height="wrap_content"
         android:textAlignment="gravity"
         android:textDirection="firstStrong"
-        android:tooltipText="@string/app_name"
         app:text="点击查询详细物流信息"
         app:textColor="#fff"
         app:type="indeterminate"

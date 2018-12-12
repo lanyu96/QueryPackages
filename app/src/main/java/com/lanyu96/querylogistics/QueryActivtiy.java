@@ -139,7 +139,7 @@ public class QueryActivtiy extends AppCompatActivity {
 
     }
 
-    public void queryInfo(View view) {
+    public void queryInfo(final View view) {
         String logisticsDanhao = logisticsDanhao_et.getText().toString().trim();
         if (logisticsCompany ==null || logisticsCompany.equals("请选择") || logisticsDanhao.equals("")) {
             Toast.makeText(this, "请填写完整后再试", Toast.LENGTH_SHORT).show();
@@ -169,6 +169,13 @@ public class QueryActivtiy extends AppCompatActivity {
 
             new RequestNetworkDataTask().execute(sb.toString());
 
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+//                    queryInfo(view);
+                    btnProgress.startLoader();
+                }
+            });
 
             //获取数据后,清空StringBuilder
 //        sb.delete(0, sb.length() - 1);

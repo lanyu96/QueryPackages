@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lanyu96.querylogistics.adapter.DataInfoAdapter;
 import com.lanyu96.querylogistics.bean.LocAndTimeInfo;
@@ -139,37 +140,44 @@ public class QueryActivtiy extends AppCompatActivity {
     }
 
     public void queryInfo(View view) {
+        String logisticsDanhao = logisticsDanhao_et.getText().toString().trim();
+        if (logisticsCompany ==null || logisticsCompany.equals("请选择") || logisticsDanhao.equals("")) {
+            Toast.makeText(this, "请填写完整后再试", Toast.LENGTH_SHORT).show();
+        } else {
+            btnProgress.startLoader();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    btnProgress.stopLoader();
+                }
+            }, 500);
 
-        btnProgress.startLoader();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                btnProgress.stopLoader();
-            }
-        }, 500);
-
-        sb = new StringBuilder();
-        sb.append("http://www.kuaidi100.com/query?type=");
+            sb = new StringBuilder();
+            sb.append("http://www.kuaidi100.com/query?type=");
 
 //        String logisticsCompany = logisticsCompany_et.getText().toString().trim();
 
 
-        String logisticsDanhao = logisticsDanhao_et.getText().toString().trim();
 
 
-        sb.append(logisticsCompany);
 
-        sb.append("&postid=");
-        sb.append(logisticsDanhao);
-        Log.i(TAG, "字符串请求");
+            sb.append(logisticsCompany);
 
-        new RequestNetworkDataTask().execute(sb.toString());
+            sb.append("&postid=");
+            sb.append(logisticsDanhao);
+            Log.i(TAG, "字符串请求");
+
+            new RequestNetworkDataTask().execute(sb.toString());
 
 
-        //获取数据后,清空StringBuilder
+            //获取数据后,清空StringBuilder
 //        sb.delete(0, sb.length() - 1);
 
-    }
+        }
+        }
+
+
+
 
 //    /**
 //     *     解析

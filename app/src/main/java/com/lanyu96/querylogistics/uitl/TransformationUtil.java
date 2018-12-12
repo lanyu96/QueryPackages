@@ -43,6 +43,10 @@ public class TransformationUtil {
             case "宅急送":
                 logisticsCompany = "zhaijisong";
                 break;
+            case "请选择":
+                Toast.makeText(context, "请选择一个快递公司", Toast.LENGTH_SHORT).show();
+                logisticsCompany = "";
+                break;
             default:
                 Toast.makeText(context, "请选择快递公司", Toast.LENGTH_SHORT).show();
                 logisticsCompany = "";

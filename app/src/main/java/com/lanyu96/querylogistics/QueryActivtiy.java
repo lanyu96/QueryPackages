@@ -3,6 +3,7 @@ package com.lanyu96.querylogistics;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +31,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import github.ishaan.buttonprogressbar.ButtonProgressBar;
+
 
 public class QueryActivtiy extends AppCompatActivity {
     private static String TAG = "TTTT";
@@ -46,6 +49,7 @@ public class QueryActivtiy extends AppCompatActivity {
     private String company;
     private SharedPreferences sp;
     private String spCompany;
+    private ButtonProgressBar btnProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +58,16 @@ public class QueryActivtiy extends AppCompatActivity {
         initSp();
         initView();
 //        sb = new StringBuilder();
-
+        //按钮实现逻辑
+        ButtonProgress();
 
     }
+
+    private void ButtonProgress() {
+
+        btnProgress = findViewById(R.id.act_query_btn_progressBar);
+    }
+
 
     /**
      * 初始化SharedPreferences存储
@@ -128,6 +139,15 @@ public class QueryActivtiy extends AppCompatActivity {
     }
 
     public void queryInfo(View view) {
+
+        btnProgress.startLoader();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                btnProgress.stopLoader();
+            }
+        }, 500);
+
         sb = new StringBuilder();
         sb.append("http://www.kuaidi100.com/query?type=");
 

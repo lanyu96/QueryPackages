@@ -8,16 +8,32 @@
 
 
 
-    <github.ishaan.buttonprogressbar.ButtonProgressBar
-        android:id="@+id/test_btn_progressBar"
+      <!--<github.ishaan.buttonprogressbar.ButtonProgressBar-->
+        <!--android:id="@+id/test_btn_progressBar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:text="点击获取"-->
+        <!--app:textColor="#fff"-->
+        <!--app:type="indeterminate"-->
+
+        <!--/>-->
+
+    <!--<cn.jeesoft.widget.pickerview.CharacterPickerView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--app:barrierAllowsGoneWidgets="true"-->
+        <!--app:barrierDirection="bottom"-->
+        <!--android:layout_height="wrap_content">-->
+
+
+
+    <!--</cn.jeesoft.widget.pickerview.CharacterPickerView>-->
+
+    <Button
+        android:onClick="test111"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:text="点击获取"
-        app:textColor="#fff"
-        app:type="indeterminate"
-
+        android:text="test"
         />
-
 
 
 

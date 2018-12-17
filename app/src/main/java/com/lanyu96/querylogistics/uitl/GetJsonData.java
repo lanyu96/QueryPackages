@@ -24,7 +24,7 @@ public class GetJsonData {
                 .url(urlStr)
                 .build();
         Call call = client.newCall(request);
-
+        Log.i(TAG,"请求的数据为:"+urlStr);
         try {
             Response response = call.execute();
             data = response.body().string();

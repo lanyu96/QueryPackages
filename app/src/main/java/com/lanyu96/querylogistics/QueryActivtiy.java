@@ -3,14 +3,14 @@ package com.lanyu96.querylogistics;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.lanyu96.querylogistics.adapter.DataInfoAdapter;
 import com.lanyu96.querylogistics.bean.LocAndTimeInfo;
 import com.lanyu96.querylogistics.bean.PackagesCompany;
+import com.lanyu96.querylogistics.dialog.WheelViewDialog;
 import com.lanyu96.querylogistics.uitl.GetJsonData;
 import com.lanyu96.querylogistics.uitl.SimpleDividerItemDecoration;
 import com.lanyu96.querylogistics.uitl.TransformationUtil;
@@ -29,7 +30,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import github.ishaan.buttonprogressbar.ButtonProgressBar;
@@ -51,17 +51,44 @@ public class QueryActivtiy extends AppCompatActivity {
     private SharedPreferences sp;
     private String spCompany;
     private ButtonProgressBar btnProgress;
-
+    private Button queryCompanyBtn;
+    private ArrayList<String> stringArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query_activtiy);
+        initData();
         initSp();
         initView();
+        showDialog();
 //        sb = new StringBuilder();
         //按钮实现逻辑
         ButtonProgress();
 
+    }
+
+    private void initData() {
+        stringArrayList = new ArrayList<>();
+        stringArrayList.addAll(Arrays.asList(PackagesCompany.str));
+    }
+
+    private void showDialog() {
+        queryCompanyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WheelViewDialog dialog = new WheelViewDialog( QueryActivtiy.this, stringArrayList );
+                dialog.setOnSelectedListener(new WheelViewDialog.OnSelectedListener() {
+                    @Override
+                    public void getData(String data) {
+                        Toast.makeText(QueryActivtiy.this, ""+data, Toast.LENGTH_SHORT).show();
+                        queryCompanyBtn.setText(data);
+                        logisticsCompany = TransformationUtil.Transformation(QueryActivtiy.this,data);
+                        company = data;
+                    }
+                });
+                dialog.show();
+            }
+        });
     }
 
     private void ButtonProgress() {
@@ -87,7 +114,7 @@ public class QueryActivtiy extends AppCompatActivity {
         query_danhao_tv = findViewById(R.id.act_query_danhao_tv);
 
         logisticsDanhao_et = findViewById(R.id.act_query_yundanhao_et);
-        query_company_nicespinner = findViewById(R.id.act_query_company_nicespinner);
+//        query_company_nicespinner = findViewById(R.id.act_query_company_nicespinner);
 
         //初始化RecyclerView
         dataInfo_rv = findViewById(R.id.act_query_dateInfo_rv);
@@ -101,26 +128,31 @@ public class QueryActivtiy extends AppCompatActivity {
         dataInfo_rv.addItemDecoration(new SimpleDividerItemDecoration(this, 50, 3));
 
 
+        //初始化弹出dialog的button
+        queryCompanyBtn = findViewById(R.id.act_query_company_btn);
+
+
+
         //为下拉列表设置item
 
-        LinkedList<String> linkedList = new LinkedList<>();
-        for (int i = 0; i < PackagesCompany.str.length; i++) {
-            linkedList.add(PackagesCompany.str[i]);
-        }
-
-        query_company_nicespinner.attachDataSource(linkedList);
-
-
-        //为下拉列表设置监听
-        query_company_nicespinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-//                Toast.makeText(QueryActivtiy.this, ""+view+PackagesCompany.str[position], Toast.LENGTH_SHORT).show();
-                logisticsCompany = TransformationUtil.Transformation(QueryActivtiy.this, PackagesCompany.str[position]);
-                company = PackagesCompany.str[position];
-            }
-        });
+//        LinkedList<String> linkedList = new LinkedList<>();
+//        for (int i = 0; i < PackagesCompany.str.length; i++) {
+//            linkedList.add(PackagesCompany.str[i]);
+//        }
+//
+//        query_company_nicespinner.attachDataSource(linkedList);
+//
+//
+//        //为下拉列表设置监听
+//        query_company_nicespinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+////                Toast.makeText(QueryActivtiy.this, ""+view+PackagesCompany.str[position], Toast.LENGTH_SHORT).show();
+//                logisticsCompany = TransformationUtil.Transformation(QueryActivtiy.this, PackagesCompany.str[position]);
+//                company = PackagesCompany.str[position];
+//            }
+//        });
 
 
         //临时指定 edittext

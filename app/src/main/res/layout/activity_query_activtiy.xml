@@ -25,12 +25,19 @@
         android:layout_marginBottom="10dp"
         >
 
-        <org.angmarch.views.NiceSpinner
+        <!--<org.angmarch.views.NiceSpinner-->
 
-            android:id="@+id/act_query_company_nicespinner"
+            <!--android:id="@+id/act_query_company_nicespinner"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        <Button
+            android:id="@+id/act_query_company_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="match_parent"
+            android:background="#007adcd5"
+            android:text="请选择快递"
+            />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

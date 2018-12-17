@@ -19,8 +19,9 @@ android {
 }
 allprojects {
     repositories {
+        google()
         maven { url "https://jitpack.io" }
-        jcenter()
+//        jcenter()
 //        maven { url "https://jitpack.io" }
     }
 }
@@ -45,4 +46,10 @@ dependencies {
     implementation 'com.github.dmytrodanylyk:android-morphing-button:98a4986e56'
 
     implementation 'com.github.ishaan1995:ButtonProgressBar:1.0'
+
+    // 可实现单项选择，并支持一二三级联动效果 高仿iOS的滚轮效果
+//    implementation 'com.github.imkarl:CharacterPickerView:v0.2.7'
+
+    //实现类似于 ios风格的滚动选择控件
+    implementation 'com.weigan:loopView:0.1.2'
 }

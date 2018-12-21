@@ -4,4 +4,5 @@
         韵达=yunda 天天=tiantian 汇通=huitongkuaidi 全峰=quanfengkuaidi 德邦=debangwuliu 宅急送=zhaijisong,
                     后期加入下拉列表显示物流公司信息
     </string>
+    <string name="hello_blank_fragment" />
 </resources>

@@ -1,4 +1,4 @@
-package com.lanyu96.querylogistics;
+package com.lanyu96.querylogistics.ui;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lanyu96.querylogistics.R;
 import com.lanyu96.querylogistics.adapter.DataInfoAdapter;
 import com.lanyu96.querylogistics.bean.LocAndTimeInfo;
 import com.lanyu96.querylogistics.bean.PackagesCompany;
@@ -128,7 +129,7 @@ public class QueryActivtiy extends AppCompatActivity {
         dataInfo_rv.addItemDecoration(new SimpleDividerItemDecoration(this, 50, 3));
 
 
-        //初始化弹出dialog的button
+        //初始化弹出dialo g的button
         queryCompanyBtn = findViewById(R.id.act_query_company_btn);
 
 
@@ -162,7 +163,10 @@ public class QueryActivtiy extends AppCompatActivity {
         String spNumber = sp.getString("NUMBER", "");
         if (!spNumber.equals("") && !spCompany.equals("")) {
             logisticsDanhao_et.setText(spNumber);
-            query_company_nicespinner.setTextInternal(spCompany);
+//            query_company_nicespinner.setTextInternal(spCompany);
+            //当sp中有数据时,自动调取数据
+            queryCompanyBtn.setText(spCompany);
+
             //通过TransformationUtil工具类解析快递公司
             logisticsCompany = TransformationUtil.Transformation(this, spCompany);
 

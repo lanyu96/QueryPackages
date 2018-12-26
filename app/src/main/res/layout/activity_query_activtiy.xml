@@ -7,7 +7,8 @@
     android:orientation="vertical"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    tools:context=".QueryActivtiy">
+    android:background="@drawable/bg1"
+    tools:context=".ui.QueryActivtiy">
 
 
     <!--<TextView-->
@@ -87,10 +88,10 @@
         android:textAlignment="gravity"
         android:textDirection="firstStrong"
         app:text="点击查询详细物流信息"
-        app:textColor="#fff"
+        app:textColor="#87020303"
         app:type="indeterminate"
-        app:bgColor="#6385eb"
-        app:progColor="#1fc5d1"
+        app:bgColor="#8dd9e0f4"
+        app:progColor="#88b2edf1"
 
         />
 

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.lanyu96.querylogistics.R;
+import com.lanyu96.querylogistics.fragment.PackagesFragment;
 
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;     //分割线Drawable
@@ -68,7 +69,7 @@ public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
 //            int bottom = top + mDividerHeight;
             int bottom = top + mDivider.getIntrinsicHeight();
             if (inset > 0) {
-                mDivider.setBounds(left + inset + 155, top, right - inset, bottom);
+                mDivider.setBounds(left + inset, top, right - inset, bottom);
             } else {
                 mDivider.setBounds(left, top, right, bottom);
             }

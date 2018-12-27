@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    android:background="@drawable/bg1"
+    android:background="#fafafa"
     >
 
 
@@ -79,7 +79,6 @@
     <!--android:text="点击查询详细物流信息" />-->
 
     <github.ishaan.buttonprogressbar.ButtonProgressBar
-        android:onClick="queryInfo"
         android:id="@+id/act_query_btn_progressBar"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
@@ -90,7 +89,7 @@
         app:text="点击查询详细物流信息"
         app:textColor="#87020303"
         app:type="indeterminate"
-        app:bgColor="#8dd9e0f4"
+        app:bgColor="#8d4867bc"
         app:progColor="#88b2edf1"
 
         />

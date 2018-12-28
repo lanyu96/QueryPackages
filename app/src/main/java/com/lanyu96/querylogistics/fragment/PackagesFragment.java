@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +68,7 @@ public class PackagesFragment extends Fragment{
     private Button queryCompanyBtn;
     private ArrayList<String> stringArrayList;
     private LoadingLayout loadingLayout;
+    private ImageView queryBgIv;
 
     @Nullable
     @Override
@@ -101,6 +103,8 @@ public class PackagesFragment extends Fragment{
         //为recyclerView添加分割线
         dataInfo_rv.addItemDecoration(new SimpleDividerItemDecoration(getActivity(), 50, 3));
 
+        //初始化RecyclerView背景
+        queryBgIv = view.findViewById(R.id.fragment_query_bg_iv);
 
         //初始化弹出dialo g的button
         queryCompanyBtn = view.findViewById(R.id.act_query_company_btn);
@@ -153,10 +157,11 @@ public class PackagesFragment extends Fragment{
                 boolean isNetworkAvailable = NetWorkUtil.isNetworkAvailable(mActivity);
                 if (!isNetworkAvailable) {
                     //当无网络连接时 ,显示无网络状态
+                    queryBgIv.setVisibility(View.INVISIBLE);
+                    //隐藏背景图片
                     loadingLayout.setStatus(LoadingLayout.No_Network);
                 } else {
-                    //显示正在加载的图标
-                    loadingLayout.setStatus(LoadingLayout.Loading);
+
                     String logisticsDanhao = logisticsDanhao_et.getText().toString().trim();
                     if (logisticsCompany == null || logisticsCompany.equals("请选择") || logisticsDanhao.equals("")) {
                         Toast.makeText(mActivity, "请填写完整后再试", Toast.LENGTH_SHORT).show();
@@ -169,7 +174,10 @@ public class PackagesFragment extends Fragment{
 //                            btnProgress.stopLoader();
 //                        }
 //                    }, 500);
-
+                        //显示正在加载的图标
+                        loadingLayout.setStatus(LoadingLayout.Loading);
+                        //隐藏背景图片
+                        queryBgIv.setVisibility(View.INVISIBLE);
                         sb = new StringBuilder();
                         sb.append("http://www.kuaidi100.com/query?type=");
 

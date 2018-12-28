@@ -91,6 +91,7 @@
     <Button
         android:id="@+id/fragment_onClick_query_btn"
         android:layout_width="match_parent"
+        android:background="#88b2edf1"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"

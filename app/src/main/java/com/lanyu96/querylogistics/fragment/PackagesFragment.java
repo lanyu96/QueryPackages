@@ -28,6 +28,7 @@ import com.lanyu96.querylogistics.bean.PackagesCompany;
 import com.lanyu96.querylogistics.dialog.WheelViewDialog;
 import com.lanyu96.querylogistics.ui.QueryActivtiy;
 import com.lanyu96.querylogistics.uitl.GetJsonData;
+import com.lanyu96.querylogistics.uitl.NetWorkUtil;
 import com.lanyu96.querylogistics.uitl.SimpleDividerItemDecoration;
 import com.lanyu96.querylogistics.uitl.TransformationUtil;
 import com.weavey.loading.lib.LoadingLayout;
@@ -149,14 +150,18 @@ public class PackagesFragment extends Fragment{
         onClickQueryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-                String logisticsDanhao = logisticsDanhao_et.getText().toString().trim();
-                if (logisticsCompany ==null || logisticsCompany.equals("请选择") || logisticsDanhao.equals("")) {
-                    Toast.makeText(mActivity, "请填写完整后再试", Toast.LENGTH_SHORT).show();
+                boolean isNetworkAvailable = NetWorkUtil.isNetworkAvailable(mActivity);
+                if (!isNetworkAvailable) {
+                    //当无网络连接时 ,显示无网络状态
+                    loadingLayout.setStatus(LoadingLayout.No_Network);
                 } else {
-                    //带状态加载的按钮
+                    //显示正在加载的图标
+                    loadingLayout.setStatus(LoadingLayout.Loading);
+                    String logisticsDanhao = logisticsDanhao_et.getText().toString().trim();
+                    if (logisticsCompany == null || logisticsCompany.equals("请选择") || logisticsDanhao.equals("")) {
+                        Toast.makeText(mActivity, "请填写完整后再试", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //带状态加载的按钮
 //                    btnProgress.startLoader();
 //                    new Handler().postDelayed(new Runnable() {
 //                        @Override
@@ -165,24 +170,21 @@ public class PackagesFragment extends Fragment{
 //                        }
 //                    }, 500);
 
-                    sb = new StringBuilder();
-                    sb.append("http://www.kuaidi100.com/query?type=");
+                        sb = new StringBuilder();
+                        sb.append("http://www.kuaidi100.com/query?type=");
 
 //        String logisticsCompany = logisticsCompany_et.getText().toString().trim();
 
 
+                        sb.append(logisticsCompany);
 
+                        sb.append("&postid=");
+                        sb.append(logisticsDanhao);
+                        Log.i(TAG, "字符串请求");
 
+                        new RequestNetworkDataTask().execute(sb.toString());
 
-                    sb.append(logisticsCompany);
-
-                    sb.append("&postid=");
-                    sb.append(logisticsDanhao);
-                    Log.i(TAG, "字符串请求");
-
-                    new RequestNetworkDataTask().execute(sb.toString());
-
-                    //状态加载按钮
+                        //状态加载按钮
 //                    new Thread(new Runnable() {
 //                        @Override
 //                        public void run() {
@@ -190,10 +192,7 @@ public class PackagesFragment extends Fragment{
 //                            btnProgress.startLoader();
 //                        }
 //                    });
-
-                    //获取数据后,清空StringBuilder
-//        sb.delete(0, sb.length() - 1);
-
+                    }
                 }
             }
         });
@@ -220,14 +219,6 @@ public class PackagesFragment extends Fragment{
         });
     }
 
-    public void queryInfo(final View view) {
-
-    }
-
-
-
-
-
     //内部类: 实现异步网络请求
     @SuppressLint("StaticFieldLeak")
     class RequestNetworkDataTask extends AsyncTask<String, Integer, String> {
@@ -238,7 +229,6 @@ public class PackagesFragment extends Fragment{
 //            logisticsInfo_tv.setText("正在加载");
             query_company_tv.setText("正在加载");
             query_danhao_tv.setText("");
-            loadingLayout.setStatus(LoadingLayout.Loading);
 
             List<DataInfoAdapter> list = new ArrayList<>();
             dataInfo_rv.setAdapter(new DataInfoAdapter(mActivity, list));
@@ -251,6 +241,7 @@ public class PackagesFragment extends Fragment{
             GetJsonData getJsonData = new GetJsonData();
             String result = getJsonData.getJsonData(strings[0]);
 //            String result = GetJsonData.getJsonData(strings[0]);
+
             return result;
         }
 
@@ -260,6 +251,7 @@ public class PackagesFragment extends Fragment{
 
             //调用解析方法
 //            parseJSONWithGSON(s);
+
 
             try {
                 JSONObject jsonObject = new JSONObject(s);
@@ -286,6 +278,12 @@ public class PackagesFragment extends Fragment{
                 String state = jsonObject.optString("state");
                 String status = jsonObject.optString("status");
 
+                Log.i("ZHOUT", "state是" + state);
+                Log.i("ZHOUT", "status是" + status);
+                if (Integer.parseInt(status) != 200) {
+                    loadingLayout.setStatus(LoadingLayout.Empty);
+                }else{
+
                 //第二层解析
                 JSONArray jsonArray = jsonObject.optJSONArray("data");
 
@@ -304,10 +302,15 @@ public class PackagesFragment extends Fragment{
                 }
                 dataInfo_rv.setAdapter(new DataInfoAdapter(mActivity, list));
                 loadingLayout.setStatus(LoadingLayout.Success);
-                //将快递公司信息和快递单号添加到SP中
-                sp.edit().putString("COMPANY", company)
-                        .putString("NUMBER", number).apply();
 
+                //这个判断为了解决当缓存一个数据后, 打开应用 直接点击查询,出结果,
+                //关闭再次打开App 导致 数据清空问题
+                if (company != null && number != null && !company.equals("") && !number.equals("")) {
+                    //将快递公司信息和快递单号添加到SP中
+                    sp.edit().putString("COMPANY", company)
+                            .putString("NUMBER", number).apply();
+                }
+            }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -316,6 +319,7 @@ public class PackagesFragment extends Fragment{
 //            logisticsInfo_tv.setText(s);
             Log.i(TAG, s);
         }
+
     }
 
 

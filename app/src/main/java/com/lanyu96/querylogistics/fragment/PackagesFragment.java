@@ -30,6 +30,7 @@ import com.lanyu96.querylogistics.ui.QueryActivtiy;
 import com.lanyu96.querylogistics.uitl.GetJsonData;
 import com.lanyu96.querylogistics.uitl.SimpleDividerItemDecoration;
 import com.lanyu96.querylogistics.uitl.TransformationUtil;
+import com.weavey.loading.lib.LoadingLayout;
 
 import org.angmarch.views.NiceSpinner;
 import org.json.JSONArray;
@@ -61,8 +62,11 @@ public class PackagesFragment extends Fragment{
     private SharedPreferences sp;
     private String spCompany;
     private ButtonProgressBar btnProgress;
+    private Button onClickQueryBtn;
     private Button queryCompanyBtn;
     private ArrayList<String> stringArrayList;
+    private LoadingLayout loadingLayout;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,7 +80,8 @@ public class PackagesFragment extends Fragment{
 
         stringArrayList = new ArrayList<>();
         stringArrayList.addAll(Arrays.asList(PackagesCompany.str));
-        btnProgress = view.findViewById(R.id.act_query_btn_progressBar);
+//        btnProgress = view.findViewById(R.id.act_query_btn_progressBar);
+        onClickQueryBtn = view.findViewById(R.id.fragment_onClick_query_btn);
         sp = mActivity.getSharedPreferences("danhao", MODE_PRIVATE);
         query_company_tv = view.findViewById(R.id.act_query_company_tv);
         query_danhao_tv = view.findViewById(R.id.act_query_danhao_tv);
@@ -99,6 +104,8 @@ public class PackagesFragment extends Fragment{
         //初始化弹出dialo g的button
         queryCompanyBtn = view.findViewById(R.id.act_query_company_btn);
 
+        //初始化状态加载布局
+        loadingLayout = view.findViewById(R.id.act_loading_ll);
 
 
         //为下拉列表设置item
@@ -139,20 +146,24 @@ public class PackagesFragment extends Fragment{
 
         }
         showDialog();
-        btnProgress.setOnClickListener(new View.OnClickListener() {
+        onClickQueryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 String logisticsDanhao = logisticsDanhao_et.getText().toString().trim();
                 if (logisticsCompany ==null || logisticsCompany.equals("请选择") || logisticsDanhao.equals("")) {
                     Toast.makeText(mActivity, "请填写完整后再试", Toast.LENGTH_SHORT).show();
                 } else {
-                    btnProgress.startLoader();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            btnProgress.stopLoader();
-                        }
-                    }, 500);
+                    //带状态加载的按钮
+//                    btnProgress.startLoader();
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            btnProgress.stopLoader();
+//                        }
+//                    }, 500);
 
                     sb = new StringBuilder();
                     sb.append("http://www.kuaidi100.com/query?type=");
@@ -171,13 +182,14 @@ public class PackagesFragment extends Fragment{
 
                     new RequestNetworkDataTask().execute(sb.toString());
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-//                    queryInfo(view);
-                            btnProgress.startLoader();
-                        }
-                    });
+                    //状态加载按钮
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+////                    queryInfo(view);
+//                            btnProgress.startLoader();
+//                        }
+//                    });
 
                     //获取数据后,清空StringBuilder
 //        sb.delete(0, sb.length() - 1);
@@ -226,6 +238,8 @@ public class PackagesFragment extends Fragment{
 //            logisticsInfo_tv.setText("正在加载");
             query_company_tv.setText("正在加载");
             query_danhao_tv.setText("");
+            loadingLayout.setStatus(LoadingLayout.Loading);
+
             List<DataInfoAdapter> list = new ArrayList<>();
             dataInfo_rv.setAdapter(new DataInfoAdapter(mActivity, list));
             Log.i(TAG, "正在获取jsonData");
@@ -243,6 +257,7 @@ public class PackagesFragment extends Fragment{
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
             //调用解析方法
 //            parseJSONWithGSON(s);
 
@@ -288,7 +303,7 @@ public class PackagesFragment extends Fragment{
                     }
                 }
                 dataInfo_rv.setAdapter(new DataInfoAdapter(mActivity, list));
-
+                loadingLayout.setStatus(LoadingLayout.Success);
                 //将快递公司信息和快递单号添加到SP中
                 sp.edit().putString("COMPANY", company)
                         .putString("NUMBER", number).apply();

@@ -3,8 +3,12 @@ package com.lanyu96.querylogistics.ui;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.lanyu96.querylogistics.R;
 import com.lanyu96.querylogistics.fragment.HomeFragment;
@@ -29,6 +33,27 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initUI();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //实例化一个MenuInflater对象
+        MenuInflater inflater = getMenuInflater();
+        //解析菜单文件
+        inflater.inflate(R.menu.menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about:
+                Toast.makeText(this, "点击了关于菜单", Toast.LENGTH_SHORT).show();
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     private void initUI() {

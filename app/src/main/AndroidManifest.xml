@@ -11,22 +11,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar">
         <activity android:name=".MainActivity" />
-        <activity android:name=".ui.QueryActivtiy">
+        <activity android:name=".ui.QueryActivtiy"></activity>
+        <activity android:name=".TestActivity" />
+        <activity
+            android:name=".ui.HomeActivity"
+            android:windowSoftInputMode="adjustPan">
 
         </activity>
-        <activity android:name=".TestActivity" />
-        <activity android:name=".ui.HomeActivity"
-            android:windowSoftInputMode="adjustPan"
+        <activity android:name=".ui.WelcomeActivity"
+            android:theme="@style/AppThemeFullScreen"
             >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

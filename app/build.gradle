@@ -51,4 +51,7 @@ dependencies {
 
     //fragment
     implementation 'devlight.io:navigationtabbar:1.2.5'
+
+    //加载布局管理器
+    implementation 'com.lai.weavey:loadinglayout:1.3.1'
 }

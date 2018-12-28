@@ -151,22 +151,45 @@ public class PackagesFragment extends Fragment{
 
         }
         showDialog();
+        //加载失败页面中的点击重试按钮监听
+        loadingLayout.setOnReloadListener(new LoadingLayout.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                boolean isNetworkAvailable = NetWorkUtil.isNetworkAvailable(mActivity);
+                if (!isNetworkAvailable) {
+                    //隐藏背景图片
+                    queryBgIv.setVisibility(View.INVISIBLE);
+                    //当无网络连接时 ,显示无网络状态
+                    loadingLayout.setStatus(LoadingLayout.No_Network);
+                } else {
+                    netWorkAvailable();
+                }
+            }
+        });
         onClickQueryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean isNetworkAvailable = NetWorkUtil.isNetworkAvailable(mActivity);
                 if (!isNetworkAvailable) {
-                    //当无网络连接时 ,显示无网络状态
-                    queryBgIv.setVisibility(View.INVISIBLE);
                     //隐藏背景图片
+                    queryBgIv.setVisibility(View.INVISIBLE);
+                    //当无网络连接时 ,显示无网络状态
                     loadingLayout.setStatus(LoadingLayout.No_Network);
                 } else {
+                    netWorkAvailable();
 
-                    String logisticsDanhao = logisticsDanhao_et.getText().toString().trim();
-                    if (logisticsCompany == null || logisticsCompany.equals("请选择") || logisticsDanhao.equals("")) {
-                        Toast.makeText(mActivity, "请填写完整后再试", Toast.LENGTH_SHORT).show();
-                    } else {
-                        //带状态加载的按钮
+                }
+            }
+        });
+
+
+    }
+    private void netWorkAvailable(){
+        String logisticsDanhao = logisticsDanhao_et.getText().toString().trim();
+        if (logisticsCompany == null || logisticsCompany.equals("请选择") || logisticsDanhao.equals("")) {
+            Toast.makeText(mActivity, "请填写完整后再试", Toast.LENGTH_SHORT).show();
+        } else {
+            //带状态加载的按钮
 //                    btnProgress.startLoader();
 //                    new Handler().postDelayed(new Runnable() {
 //                        @Override
@@ -174,25 +197,25 @@ public class PackagesFragment extends Fragment{
 //                            btnProgress.stopLoader();
 //                        }
 //                    }, 500);
-                        //显示正在加载的图标
-                        loadingLayout.setStatus(LoadingLayout.Loading);
-                        //隐藏背景图片
-                        queryBgIv.setVisibility(View.INVISIBLE);
-                        sb = new StringBuilder();
-                        sb.append("http://www.kuaidi100.com/query?type=");
+            //显示正在加载的图标
+            loadingLayout.setStatus(LoadingLayout.Loading);
+            //隐藏背景图片
+            queryBgIv.setVisibility(View.INVISIBLE);
+            sb = new StringBuilder();
+            sb.append("http://www.kuaidi100.com/query?type=");
 
 //        String logisticsCompany = logisticsCompany_et.getText().toString().trim();
 
 
-                        sb.append(logisticsCompany);
+            sb.append(logisticsCompany);
 
-                        sb.append("&postid=");
-                        sb.append(logisticsDanhao);
-                        Log.i(TAG, "字符串请求");
+            sb.append("&postid=");
+            sb.append(logisticsDanhao);
+            Log.i(TAG, "字符串请求");
 
-                        new RequestNetworkDataTask().execute(sb.toString());
+            new RequestNetworkDataTask().execute(sb.toString());
 
-                        //状态加载按钮
+            //状态加载按钮
 //                    new Thread(new Runnable() {
 //                        @Override
 //                        public void run() {
@@ -200,12 +223,7 @@ public class PackagesFragment extends Fragment{
 //                            btnProgress.startLoader();
 //                        }
 //                    });
-                    }
-                }
-            }
-        });
-
-
+        }
     }
 
     private void showDialog() {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.lanyu96.querylogistics">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,10 +13,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        tools:replace="android:icon"
         android:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar">
         <activity android:name=".MainActivity" />
         <activity android:name=".ui.QueryActivtiy"></activity>
-        <activity android:name=".TestActivity" />
+        <activity android:name=".TestActivity" >
+
+
+        </activity>
+
         <activity
             android:name=".ui.HomeActivity"
             android:windowSoftInputMode="adjustPan">
@@ -32,5 +38,9 @@
             </intent-filter>
         </activity>
     </application>
+    <!--多渠道打包        -->
+    <meta-data
+        android:name="UMENG_CHANNEL"
+        android:value="${UMENG_CHANNEL_VALUE}" />
 
 </manifest>

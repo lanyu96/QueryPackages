@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 import github.ishaan.buttonprogressbar.ButtonProgressBar;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -151,6 +155,8 @@ public class PackagesFragment extends Fragment{
 
         }
         showDialog();
+
+
         //加载失败页面中的点击重试按钮监听
         loadingLayout.setOnReloadListener(new LoadingLayout.OnReloadListener() {
             @Override
@@ -187,7 +193,17 @@ public class PackagesFragment extends Fragment{
     private void netWorkAvailable(){
         String logisticsDanhao = logisticsDanhao_et.getText().toString().trim();
         if (logisticsCompany == null || logisticsCompany.equals("请选择") || logisticsDanhao.equals("")) {
-            Toast.makeText(mActivity, "请填写完整后再试", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mActivity, "请填写完整后再试", Toast.LENGTH_SHORT).show();
+
+            Toast toasty = Toasty.warning(mActivity, "请将快递公司和单号补充完整", Toast.LENGTH_LONG, true);
+            toasty.setGravity(Gravity.CENTER,0,0);
+            toasty.show();
+
+//            SweetAlertDialog sDialog = new SweetAlertDialog(mActivity, SweetAlertDialog.WARNING_TYPE);
+//            sDialog.setTitleText("信息不完整");
+//            sDialog.setContentText("请将快递公司和快递单号填写完整后再试");
+//            sDialog.setConfirmText("继续填写");
+//            sDialog.show();
         } else {
             //带状态加载的按钮
 //                    btnProgress.startLoader();
@@ -230,7 +246,7 @@ public class PackagesFragment extends Fragment{
         queryCompanyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                WheelViewDialog dialog = new WheelViewDialog( mActivity, stringArrayList );
+                final WheelViewDialog dialog = new WheelViewDialog( mActivity, stringArrayList );
                 dialog.setOnSelectedListener(new WheelViewDialog.OnSelectedListener() {
                     @Override
                     public void getData(String data) {
@@ -238,6 +254,7 @@ public class PackagesFragment extends Fragment{
                         queryCompanyBtn.setText(data);
                         logisticsCompany = TransformationUtil.Transformation(mActivity,data);
                         company = data;
+                        dialog.cancel();
                     }
                 });
                 dialog.show();

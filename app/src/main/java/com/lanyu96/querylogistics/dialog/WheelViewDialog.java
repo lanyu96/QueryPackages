@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.lanyu96.querylogistics.R;
 import com.weigan.loopview.LoopView;
@@ -22,6 +23,7 @@ public class WheelViewDialog extends Dialog{
 
     private ArrayList<String> stringArrayList = new ArrayList<>();
     private int position = 0;
+    private LinearLayout ll;
 
     public WheelViewDialog(Context context, ArrayList<String> arrayList) {
         super(context,R.style.alert_dialog);
@@ -34,6 +36,8 @@ public class WheelViewDialog extends Dialog{
         setContentView(R.layout.dialog_view);
         setCanceledOnTouchOutside(false);//设置显示dialog后,触屏屏幕不会使dialog消失
 
+        ll = findViewById(R.id.fragment_query_dialog_ll);
+        ll.setBackgroundResource(R.drawable.dialog_background);
         loopView =  findViewById(R.id.loopView);
         btn_ok =  findViewById(R.id.btn_ok);
         btn_cancle =  findViewById(R.id.btn_cancle);

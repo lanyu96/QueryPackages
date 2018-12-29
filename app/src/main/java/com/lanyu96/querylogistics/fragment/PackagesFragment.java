@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dd.processbutton.iml.ActionProcessButton;
 import com.lanyu96.querylogistics.R;
 import com.lanyu96.querylogistics.adapter.DataInfoAdapter;
 import com.lanyu96.querylogistics.bean.LocAndTimeInfo;
@@ -73,6 +75,7 @@ public class PackagesFragment extends Fragment{
     private ArrayList<String> stringArrayList;
     private LoadingLayout loadingLayout;
     private ImageView queryBgIv;
+    private ActionProcessButton onClickQueryProcessBtn;
 
     @Nullable
     @Override
@@ -88,7 +91,12 @@ public class PackagesFragment extends Fragment{
         stringArrayList = new ArrayList<>();
         stringArrayList.addAll(Arrays.asList(PackagesCompany.str));
 //        btnProgress = view.findViewById(R.id.act_query_btn_progressBar);
-        onClickQueryBtn = view.findViewById(R.id.fragment_onClick_query_btn);
+
+//        onClickQueryBtn = view.findViewById(R.id.fragment_onClick_query_btn);
+
+        //带进度的查询按钮
+        onClickQueryProcessBtn = view.findViewById(R.id.fragment_onClick_query_action_btn);
+
         sp = mActivity.getSharedPreferences("danhao", MODE_PRIVATE);
         query_company_tv = view.findViewById(R.id.act_query_company_tv);
         query_danhao_tv = view.findViewById(R.id.act_query_danhao_tv);
@@ -172,15 +180,20 @@ public class PackagesFragment extends Fragment{
                 }
             }
         });
-        onClickQueryBtn.setOnClickListener(new View.OnClickListener() {
+        onClickQueryProcessBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 boolean isNetworkAvailable = NetWorkUtil.isNetworkAvailable(mActivity);
                 if (!isNetworkAvailable) {
+                    //进度按钮设置正在加载
+                    onClickQueryProcessBtn.setProgress(50);
                     //隐藏背景图片
                     queryBgIv.setVisibility(View.INVISIBLE);
                     //当无网络连接时 ,显示无网络状态
                     loadingLayout.setStatus(LoadingLayout.No_Network);
+                    //进度按钮设置错误状态
+                    onClickQueryProcessBtn.setProgress(-1);
                 } else {
                     netWorkAvailable();
 
@@ -205,14 +218,8 @@ public class PackagesFragment extends Fragment{
 //            sDialog.setConfirmText("继续填写");
 //            sDialog.show();
         } else {
-            //带状态加载的按钮
-//                    btnProgress.startLoader();
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            btnProgress.stopLoader();
-//                        }
-//                    }, 500);
+            //设置带进度的按钮状态为正在加载
+            onClickQueryProcessBtn.setProgress(50);
             //显示正在加载的图标
             loadingLayout.setStatus(LoadingLayout.Loading);
             //隐藏背景图片
@@ -231,14 +238,6 @@ public class PackagesFragment extends Fragment{
 
             new RequestNetworkDataTask().execute(sb.toString());
 
-            //状态加载按钮
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-////                    queryInfo(view);
-//                            btnProgress.startLoader();
-//                        }
-//                    });
         }
     }
 
@@ -345,7 +344,8 @@ public class PackagesFragment extends Fragment{
                 }
                 dataInfo_rv.setAdapter(new DataInfoAdapter(mActivity, list));
                 loadingLayout.setStatus(LoadingLayout.Success);
-
+                //设置带进度加载按钮状态为完成状态
+                onClickQueryProcessBtn.setProgress(100);
                 //这个判断为了解决当缓存一个数据后, 打开应用 直接点击查询,出结果,
                 //关闭再次打开App 导致 数据清空问题
                 if (company != null && number != null && !company.equals("") && !number.equals("")) {

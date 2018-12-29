@@ -68,34 +68,32 @@
 
 
     <!--<Button-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:onClick="queryInfo"-->
-    <!--android:text="点击查询详细物流信息" />-->
+        <!--android:id="@+id/fragment_onClick_query_btn"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="#88b2edf1"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--android:text="点击查看详细物流信息" />-->
 
-    <!--<github.ishaan.buttonprogressbar.ButtonProgressBar-->
-    <!--android:id="@+id/act_query_btn_progressBar"-->
-    <!--android:layout_marginLeft="15dp"-->
-    <!--android:layout_marginRight="15dp"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:textAlignment="gravity"-->
-    <!--android:textDirection="firstStrong"-->
-    <!--app:text="点击查询详细物流信息"-->
-    <!--app:textColor="#87020303"-->
-    <!--app:type="indeterminate"-->
-    <!--app:bgColor="#8d4867bc"-->
-    <!--app:progColor="#88b2edf1"-->
-
-    <!--/>-->
-    <Button
-        android:id="@+id/fragment_onClick_query_btn"
+    <com.dd.processbutton.iml.ActionProcessButton
+        android:id="@+id/fragment_onClick_query_action_btn"
         android:layout_width="match_parent"
-        android:background="#88b2edf1"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:text="点击查看详细物流信息" />
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:text="Sign_in"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:pb_colorComplete="@color/green_complete"
+        app:pb_colorNormal="@color/blue_normal"
+        app:pb_colorPressed="@color/blue_pressed"
+        app:pb_colorProgress="@color/purple_progress"
+        app:pb_textComplete="查询完成"
+        app:pb_textProgress="正在查询"
+        app:pb_textError="Error"
+        app:pb_colorError="@color/red_error" />
+
 
 
 
